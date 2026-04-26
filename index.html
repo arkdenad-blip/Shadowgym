@@ -1,41 +1,38 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Gym App</title>
+    <title>Shadow Gym - Akropong</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --dark-green: #0a1f14;
             --gold: #d4af37;
-            --light-bg: #1a1a1a;
-            --text-white: #ffffff;
+            --dark-overlay: rgba(10, 31, 20, 0.95);
+            --card-bg: rgba(30, 30, 30, 0.9);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--dark-green);
-            color: var(--text-white);
             margin: 0;
-            padding-bottom: 70px; /* Space for bottom menu */
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1000');
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: white;
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1500') no-repeat center center fixed;
             background-size: cover;
-            height: 150px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 3px solid var(--gold);
+            padding-bottom: 90px;
         }
 
-        .header h1 { color: var(--gold); margin: 0; font-size: 1.8rem; letter-spacing: 2px; }
+        .app-overlay { background: var(--dark-overlay); min-height: 100vh; width: 100%; }
 
-        /* Navigation Menu */
+        .header {
+            text-align: center;
+            padding: 25px 10px;
+            border-bottom: 2px solid var(--gold);
+            background: rgba(0,0,0,0.6);
+        }
+
+        .header h1 { margin: 0; color: var(--gold); letter-spacing: 4px; font-size: 1.7rem; text-shadow: 2px 2px 5px #000; }
+
+        /* Nav Bar */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -43,210 +40,223 @@
             background: #000;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             border-top: 2px solid var(--gold);
             z-index: 1000;
         }
 
         .nav-item {
-            color: #888;
+            color: #777;
             text-decoration: none;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             display: flex;
             flex-direction: column;
             align-items: center;
+            cursor: pointer;
         }
 
-        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
+        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--gold); }
 
         /* Screens */
-        .screen { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        .screen { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
         .screen.active { display: block; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Forms & Cards */
         .card {
-            background: var(--light-bg);
+            background: var(--card-bg);
             border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--gold);
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--gold);
         }
 
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
+        h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 5px; text-transform: uppercase; font-size: 1.1rem; }
+        
+        .momo-box {
+            background: #000;
+            border: 2px solid var(--gold);
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
             margin: 10px 0;
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 5px;
-            box-sizing: border-box;
         }
 
-        button {
-            width: 100%;
-            padding: 15px;
-            background: var(--gold);
-            color: black;
-            border: none;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
+        .rule-item { margin-bottom: 15px; font-size: 0.85rem; line-height: 1.4; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        .rule-item b { color: var(--gold); display: block; font-size: 0.95rem; margin-bottom: 3px; }
 
-        .price-tag { color: var(--gold); font-size: 1.2rem; font-weight: bold; }
-        .discount { background: #d43737; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #444; color: white; border-radius: 6px; }
+        button { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; cursor: pointer; }
 
-        /* Image Gallery Placeholder */
-        .gym-gallery {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .gym-gallery img { width: 100%; border-radius: 5px; border: 1px solid var(--gold); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 10px 0; }
+        .gallery-grid img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; border: 1px solid #444; }
     </style>
 </head>
 <body>
 
+<div class="app-overlay">
     <div class="header">
         <h1>SHADOW GYM</h1>
-        <small>EST. 1999 | AKROPONG</small>
+        <small>AKROPONG AKUAPEM | SINCE 1999</small>
     </div>
-
-    <nav class="nav-bar">
-        <a href="#" class="nav-item active" onclick="showScreen('home')"><i class="fa fa-home"></i>Home</a>
-        <a href="#" class="nav-item" onclick="showScreen('register')"><i class="fa fa-user-plus"></i>Join</a>
-        <a href="#" class="nav-item" onclick="showScreen('plans')"><i class="fa fa-credit-card"></i>Plans</a>
-        <a href="#" class="nav-item" onclick="showScreen('trainers')"><i class="fa fa-dumbbell"></i>Trainers</a>
-        <a href="#" class="nav-item" onclick="showScreen('shop')"><i class="fa fa-shopping-cart"></i>Shop</a>
-    </nav>
 
     <div id="home" class="screen active">
         <div class="card">
-            <h3><i class="fa fa-history"></i> Our Story</h3>
-            <p>Established in 1999 in Akropong Akuapem, Shadow Gym began as a small personal space for friends. Today, it is the home of champions.</p>
-            <p>We have hosted <strong>Akuapem Strongest</strong> and produced legends like <strong>Kofi Gyiwa, Kobby, Skylover, Dennis, and Kasay.</strong></p>
+            <h3>About the Gym</h3>
+            <p>Established in 1999, Shadow Gym started as a personal space for friends. Today, it is a premier training center that has produced champions like <b>Kofi Gyiwa, Kobby, Skylover, Dennis, and Kasay.</b></p>
+            <p><b>Location:</b> Former Revenue Authority Building, Akropong.</p>
         </div>
+
         <div class="card">
-            <h3><i class="fa fa-clock"></i> Hours & Location</h3>
-            <p><strong>Morning:</strong> 5 AM - 10 AM</p>
-            <p><strong>Evening:</strong> 3 PM - 8 PM</p>
-            <p><i class="fa fa-map-marker-alt"></i> Former Revenue Authority Building, Akropong.</p>
-        </div>
-        <div class="card">
-            <h3><i class="fa fa-image"></i> Gallery</h3>
-            <div class="gym-gallery">
-                <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400" alt="Gym">
-                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?w=400" alt="Lifting">
+            <h3>Official MoMo Payment</h3>
+            <div class="momo-box">
+                <p style="margin:0; color:#888;">Send Dues to:</p>
+                <h2 style="color:var(--gold); margin:5px 0;">0597219410</h2>
+                <p style="margin:0; font-weight:bold;">Account: Ben Shadow</p>
             </div>
+            <p style="font-size:0.8rem; text-align:center;">Please use your <b>Unique Voucher ID</b> as the reference.</p>
+        </div>
+
+        <div class="card">
+            <h3>Gym Gallery</h3>
+            <div class="gallery-grid">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300" alt="G1">
+                <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=300" alt="G2">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?w=300" alt="G3">
+                <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300" alt="G4">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>The 10 Shadow Rules</h3>
+            <div class="rule-item"><b>1. Leave No Trace</b>Gym must look the same when you leave as when you arrived.</div>
+            <div class="rule-item"><b>2. Re-rack & Wipe</b>Return all plates to racks and wipe equipment after use.</div>
+            <div class="rule-item"><b>3. Silence the Ego</b>Weights are for lifting, not dropping. Control your movements.</div>
+            <div class="rule-item"><b>4. Respect the Perimeter</b>No filming or photographing members without consent.</div>
+            <div class="rule-item"><b>5. Darkness Prep</b>Proper dark-toned attire required. No muddy shoes.</div>
+            <div class="rule-item"><b>6. No Slippers</b>Slippers or open-toed footwear are strictly prohibited.</div>
+            <div class="rule-item"><b>7. No Sachet Water</b>Strictly prohibited to maintain facility cleanliness.</div>
+            <div class="rule-item"><b>8. No Personal Storage</b>Items must not be left in the gym overnight.</div>
+            <div class="rule-item"><b>9. The 30-Day Ghost</b>Cancellations require a 30-day notice period.</div>
+            <div class="rule-item"><b>10. Operating Hours</b>Morning: 5AM–10AM | Evening: 4PM–8PM.</div>
         </div>
     </div>
 
     <div id="register" class="screen">
-        <h3><i class="fa fa-user-edit"></i> New Member Enrollment</h3>
-        <form id="regForm">
-            <input type="text" placeholder="Full Name" required>
-            <input type="text" placeholder="Alias (Nickname)">
-            <input type="text" placeholder="Location">
-            <input type="tel" placeholder="Phone Number" required>
-            <textarea placeholder="Health Conditions / Past Injuries"></textarea>
-            <input type="text" placeholder="Allergies">
-            <select>
-                <option value="full">Full Member</option>
-                <option value="walkin">Walk-in</option>
-                <option value="student">Student</option>
-                <option value="temp">Temporary Member</option>
-            </select>
-            <button type="submit">Complete Registration</button>
-        </form>
-    </div>
-
-    <div id="plans" class="screen">
-        <h3><i class="fa fa-money-bill-wave"></i> Membership Plans</h3>
         <div class="card">
-            <h4>Monthly Plan</h4>
-            <div class="price-tag">GH₵ 200 / month</div>
+            <h3>Membership Form</h3>
+            <form onsubmit="registerMember(event)">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="text" id="alias" placeholder="Alias (Nickname)">
+                <input type="text" id="location" placeholder="Location">
+                <input type="tel" id="phone" placeholder="Phone Number" required>
+                <input type="text" id="health" placeholder="Health Condition">
+                <input type="text" id="allergies" placeholder="Allergies">
+                <select id="planType">
+                    <option value="Full Member">Full Member</option>
+                    <option value="Walk in">Walk in</option>
+                    <option value="Student">Student</option>
+                    <option value="Temporary">Temporary Member</option>
+                </select>
+                <button type="submit">Register & Get ID</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="payment" class="screen">
+        <div class="card">
+            <h3>Dues & Discounts</h3>
+            <p>• Monthly: <b>GH₵ 200</b></p>
+            <p>• 6 Months (20% Disc): <b>GH₵ 1080</b></p>
+            <p>• 1 Year (40% Disc): <b>GH₵ 1920</b></p>
+        </div>
+        <div id="vSec" style="display:none;" class="card">
+            <h3>Your Payment Voucher</h3>
+            <div style="background:#000; border:2px dashed var(--gold); padding:15px; text-align:center;">
+                <p style="margin:0;">VOUCHER CODE</p>
+                <h2 id="vCode" style="color:var(--gold); letter-spacing:3px;">---</h2>
+            </div>
+            <button style="margin-top:15px;" onclick="confirmPay()">Confirm MoMo Payment</button>
+        </div>
+    </div>
+
+    <div id="info" class="screen">
+        <div class="card">
+            <h3>Trainers & Bookings</h3>
+            <p style="font-size:0.9rem;">Dennis: 0245273332<br>Kasay: 0246910032<br>Obed: 0543392756<br>Skylover: 0245173320<br>Kobby: 0246948846</p>
         </div>
         <div class="card">
-            <h4>6 Months Plan <span class="discount">20% OFF</span></h4>
-            <div class="price-tag">GH₵ 180 / month</div>
-            <p>Total: GH₵ 1,080</p>
+            <h3>Workout & Shop</h3>
+            <p>• Monthly Group Walks<br>• Cardio & Body Building</p>
+            <p>Shop: Belts, Straps, Supplements, and Mats available.</p>
         </div>
+    </div>
+
+    <div id="admin" class="screen">
         <div class="card">
-            <h4>1 Year Plan <span class="discount">40% OFF</span></h4>
-            <div class="price-tag">GH₵ 160 / month</div>
-            <p>Total: GH₵ 1,920</p>
-        </div>
-        <div class="card" style="background: var(--gold); color: black;">
-            <h4><i class="fa fa-mobile-alt"></i> Payment Instructions</h4>
-            <p>Pay via MoMo to:</p>
-            <h2 style="margin: 5px 0;">0597219410</h2>
-            <p><strong>Name:</strong> Ben Shadow</p>
+            <h3>Admin Member Search</h3>
+            <input type="text" id="search" placeholder="Search Name..." onkeyup="adminSearch()">
+            <div id="results"></div>
         </div>
     </div>
 
-    <div id="trainers" class="screen">
-        <h3><i class="fa fa-user-tie"></i> Book a Trainer</h3>
-        <p>Fees are discussed directly with the instructor.</p>
-        <div class="card">
-            <strong>Dennis:</strong> 0245273332<br>
-            <strong>Kasay:</strong> 0246910032<br>
-            <strong>Obed:</strong> 0543392756<br>
-            <strong>Skylover:</strong> 0245173320<br>
-            <strong>Kobby:</strong> 0246948846
-        </div>
-        <h3><i class="fa fa-running"></i> Workout Programs</h3>
-        <ul>
-            <li>Monthly Gym Walk (All Members)</li>
-            <li>Cardio Blast Sessions</li>
-            <li>Power Lifting & Bodybuilding</li>
-        </ul>
-    </div>
+    <nav class="nav-bar">
+        <a class="nav-item active" onclick="showScreen('home')"><i class="fa fa-home"></i>About</a>
+        <a class="nav-item" onclick="showScreen('register')"><i class="fa fa-user-plus"></i>Join</a>
+        <a class="nav-item" onclick="showScreen('payment')"><i class="fa fa-receipt"></i>Pay</a>
+        <a class="nav-item" onclick="showScreen('info')"><i class="fa fa-dumbbell"></i>Info</a>
+        <a class="nav-item" onclick="showScreen('admin')"><i class="fa fa-lock"></i>Admin</a>
+    </nav>
+</div>
 
-    <div id="shop" class="screen">
-        <h3><i class="fa fa-shopping-bag"></i> Gym Shop</h3>
-        <div class="gym-gallery">
-            <div class="card" style="text-align:center;">Towel</div>
-            <div class="card" style="text-align:center;">Gym Bottle</div>
-            <div class="card" style="text-align:center;">Belt</div>
-            <div class="card" style="text-align:center;">Wrist Wraps</div>
-            <div class="card" style="text-align:center;">Knee Straps</div>
-            <div class="card" style="text-align:center;">Supplements</div>
-        </div>
-        <p style="text-align: center;">All items available at the front desk.</p>
-    </div>
-
-    <div id="rules" class="screen">
-        <h3><i class="fa fa-gavel"></i> The Shadow Code</h3>
-        <div class="card" style="font-size: 0.9rem;">
-            <ol>
-                <li><strong>Leave No Trace:</strong> Clean up your station.</li>
-                <li><strong>Re-rack & Wipe:</strong> Return plates after use.</li>
-                <li><strong>Silence the Ego:</strong> No dropping weights.</li>
-                <li><strong>No Slippers:</strong> Proper shoes only.</li>
-                <li><strong>No Sachet Water:</strong> Prohibited inside.</li>
-                <li><strong>Hours:</strong> 5-10AM & 3-8PM.</li>
-            </ol>
-        </div>
-    </div>
-
-    <script>
-        function showScreen(screenId) {
-            // Hide all screens
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            // Show selected screen
-            document.getElementById(screenId).classList.add('active');
-            
-            // Update Nav active state
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            window.scrollTo(0,0);
+<script>
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        if(id === 'payment' && localStorage.getItem('vID')) {
+            document.getElementById('vSec').style.display = 'block';
+            document.getElementById('vCode').innerText = localStorage.getItem('vID');
         }
-    </script>
+    }
+
+    function registerMember(e) {
+        e.preventDefault();
+        const vID = "SG-" + Math.floor(100000 + Math.random() * 900000);
+        const member = {
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            vID: vID,
+            paid: "Unpaid"
+        };
+        let members = JSON.parse(localStorage.getItem('gymList') || "[]");
+        members.push(member);
+        localStorage.setItem('gymList', JSON.stringify(members));
+        localStorage.setItem('vID', vID);
+        alert("Registered! Your ID is " + vID);
+        showScreen('payment');
+    }
+
+    function confirmPay() {
+        let members = JSON.parse(localStorage.getItem('gymList') || "[]");
+        let v = localStorage.getItem('vID');
+        members.forEach(m => { if(m.vID === v) m.paid = "Paid (Pending)"; });
+        localStorage.setItem('gymList', JSON.stringify(members));
+        alert("Payment Sent for Verification!");
+    }
+
+    function adminSearch() {
+        const q = document.getElementById('search').value.toLowerCase();
+        const members = JSON.parse(localStorage.getItem('gymList') || "[]");
+        const res = document.getElementById('results');
+        res.innerHTML = "";
+        members.filter(m => m.name.toLowerCase().includes(q)).forEach(m => {
+            res.innerHTML += `<div style="background:#222; padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #444;">
+                <b>${m.name}</b><br>ID: ${m.vID} | Status: <span style="color:var(--gold)">${m.paid}</span></div>`;
+        });
+    }
+</script>
 </body>
-</html>
+               </html>
+                   
