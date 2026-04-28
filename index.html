@@ -20,7 +20,6 @@
             padding-bottom: 90px; 
         }
 
-        /* Hero Background with Animation */
         .app-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -44,7 +43,6 @@
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
 
-        /* Premium Scroller */
         .featured-scroller {
             display: flex;
             overflow-x: auto;
@@ -88,13 +86,15 @@
         h3 { color: var(--gold); margin-top: 0; letter-spacing: 2px; text-transform: uppercase; font-size: 1rem; border-left: 3px solid var(--gold); padding-left: 10px; }
 
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-        .gallery-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; transition: 0.3s; }
+        .gallery-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; transition: 0.3s; border: 1px solid #222; }
         .gallery-grid img:hover { transform: scale(1.05); border: 1px solid var(--gold); }
 
         input, select { width: 100%; padding: 16px; margin: 12px 0; background: #111; border: 1px solid #333; color: white; border-radius: 12px; font-size: 1rem; }
         button { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; font-weight: 800; border-radius: 12px; text-transform: uppercase; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
 
         .momo-box { background: linear-gradient(45deg, #000, #111); border: 1px solid var(--gold); padding: 25px; text-align: center; border-radius: 15px; }
+        .status-active { color: #00ff00; font-weight: bold; }
+        .status-expired { color: #ff4444; font-weight: bold; }
         .rules-list p { font-size: 0.9rem; margin-bottom: 15px; color: #bbb; border-bottom: 1px solid #222; padding-bottom: 10px; }
         .rules-list b { color: var(--gold); display: block; margin-bottom: 5px; }
     </style>
@@ -125,9 +125,11 @@
             <h3>Elite Gallery</h3>
             <div class="gallery-grid">
                 <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?q=80&w=400">
-                <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1574673001865-4527bc33c9ab?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=400">
                 <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=400">
                 <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?q=80&w=400">
             </div>
             <p style="font-size: 0.9rem; text-align: center; color: #888;">Join the legacy of <b>Kofi Gyiwa, Kobby, Dennis, & Kasay.</b></p>
         </div>
@@ -150,12 +152,13 @@
     <div id="register" class="screen">
         <div class="card">
             <h3>New Enrollment</h3>
-            <form onsubmit="saveMember(event)">
+            <form id="regForm" onsubmit="saveMember(event)">
                 <input type="text" id="mName" placeholder="Full Name" required>
                 <input type="text" id="mAlias" placeholder="Alias (For MoMo Ref)" required>
                 <input type="tel" id="mPhone" placeholder="Phone Number" required>
+                <input type="text" id="mLocation" placeholder="Location (e.g., Akropong, Obosomasi)" required>
                 
-                <select id="mType">
+                <select id="mType" required>
                     <option value="" disabled selected>Membership Type</option>
                     <option value="Full Member">Full Member</option>
                     <option value="Student">Student</option>
@@ -163,7 +166,7 @@
                     <option value="Walk-in">Walk-in</option>
                 </select>
 
-                <select id="mSub">
+                <select id="mSub" required>
                     <option value="" disabled selected>Subscription Plan</option>
                     <option value="30">Monthly (GH₵ 200)</option>
                     <option value="180">6 Months (GH₵ 1080 - 20% Off)</option>
@@ -230,6 +233,7 @@
             name: document.getElementById('mName').value,
             alias: document.getElementById('mAlias').value,
             phone: document.getElementById('mPhone').value,
+            location: document.getElementById('mLocation').value, // Saved Location
             type: document.getElementById('mType').value,
             duration: parseInt(document.getElementById('mSub').value),
             expiry: null, 
@@ -239,6 +243,9 @@
         db.push(member);
         localStorage.setItem('shadowSubs', JSON.stringify(db));
         localStorage.setItem('lastAlias', member.alias);
+        
+        e.target.reset(); // Clears all fields including location
+        
         alert("Success! Welcome to Shadow Gym.");
         nav('payment');
     }
@@ -274,7 +281,7 @@
                 <div style="background:#111; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid #333;">
                     <b style="color:var(--gold)">${m.name}</b> (${m.alias})<br>
                     <small>${m.type} | ${m.phone}</small><br>
-                    Status: <span class="${statusClass}">${statusText}</span><br>
+                    <small style="color: #888;">Location: ${m.location || 'N/A'}</small><br> Status: <span class="${statusClass}">${statusText}</span><br>
                     <button onclick="activateSub(${m.id})" style="padding:10px; font-size:0.7rem;">Activate ${m.duration} Days</button>
                 </div>`;
         });
