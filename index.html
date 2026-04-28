@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Gym - Cloud Edition</title>
+    <title>Shadow Gym - Titan Edition</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
     <style>
         :root { 
             --gold: #d4af37; 
@@ -89,40 +85,21 @@
 
         h3 { color: var(--gold); margin-top: 0; letter-spacing: 2px; text-transform: uppercase; font-size: 1rem; border-left: 3px solid var(--gold); padding-left: 10px; }
 
-        /* Gallery Styling */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-        .gallery-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; transition: 0.3s; border: 1px solid #222; cursor: pointer; }
-        .gallery-grid img:active { transform: scale(0.95); }
+        .gallery-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; transition: 0.3s; border: 1px solid #222; }
+        .gallery-grid img:hover { transform: scale(1.05); border: 1px solid var(--gold); }
 
-        /* Lightbox Styles */
-        #lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        #lightbox img { max-width: 100%; max-height: 80vh; border-radius: 10px; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-
-        input, select { width: 100%; padding: 16px; margin: 12px 0; background: #111; border: 1px solid #333; color: white; border-radius: 12px; font-size: 1rem; box-sizing: border-box;}
-        button { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; font-weight: 800; border-radius: 12px; text-transform: uppercase; cursor: pointer; margin-top: 15px; }
+        input, select { width: 100%; padding: 16px; margin: 12px 0; background: #111; border: 1px solid #333; color: white; border-radius: 12px; font-size: 1rem; }
+        button { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; font-weight: 800; border-radius: 12px; text-transform: uppercase; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
 
         .momo-box { background: linear-gradient(45deg, #000, #111); border: 1px solid var(--gold); padding: 25px; text-align: center; border-radius: 15px; }
         .status-active { color: #00ff00; font-weight: bold; }
         .status-expired { color: #ff4444; font-weight: bold; }
-        .rules-list p { font-size: 0.85rem; margin-bottom: 12px; color: #bbb; border-bottom: 1px solid #222; padding-bottom: 8px; line-height: 1.4; }
-        .rules-list b { color: var(--gold); display: block; margin-bottom: 3px; font-size: 0.9rem; }
+        .rules-list p { font-size: 0.9rem; margin-bottom: 15px; color: #bbb; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .rules-list b { color: var(--gold); display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
-
-<div id="lightbox" onclick="this.style.display='none'">
-    <img id="lightboxImg" src="">
-    <p style="position: absolute; bottom: 20px; color: #888;">Tap anywhere to close</p>
-</div>
 
 <div class="app-bg"></div>
 <div class="app-overlay">
@@ -133,21 +110,26 @@
 
     <div id="home" class="screen active">
         <div class="featured-scroller">
-            <div class="featured-card" onclick="viewImg(this.style.backgroundImage.slice(5, -2))" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600')">
+            <div class="featured-card" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600')">
                 <span>Power Lifting Zone</span>
             </div>
-            <div class="featured-card" onclick="viewImg(this.style.backgroundImage.slice(5, -2))" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600')">
+            <div class="featured-card" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600')">
                 <span>Cardio Mastery</span>
+            </div>
+            <div class="featured-card" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600')">
+                <span>Shadow Intensity</span>
             </div>
         </div>
 
         <div class="card">
             <h3>Elite Gallery</h3>
             <div class="gallery-grid">
-                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?q=80&w=400" onclick="viewImg(this.src)">
-                <img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=400" onclick="viewImg(this.src)">
-                <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=400" onclick="viewImg(this.src)">
-                <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=400" onclick="viewImg(this.src)">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1574673001865-4527bc33c9ab?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?q=80&w=400">
             </div>
             <p style="font-size: 0.9rem; text-align: center; color: #888;">Join the legacy of <b>Kofi Gyiwa, Kobby, Dennis, & Kasay.</b></p>
         </div>
@@ -155,16 +137,14 @@
         <div class="card">
             <h3>The Shadow Code</h3>
             <div class="rules-list">
-                <p><b>1. Leave No Trace</b>Gym must look the same when you leave.</p>
-                <p><b>2. Re-rack & Wipe</b>Return all plates and wipe down equipment.</p>
-                <p><b>3. Silence the Ego</b>Control the weights, do not drop them.</p>
-                <p><b>4. Respect the Perimeter</b>No filming members without consent.</p>
-                <p><b>5. Darkness Prep</b>Proper dark-toned attire preferred.</p>
-                <p><b>6. Safety First</b>Closed-toe footwear only (No slippers).</p>
-                <p><b>7. Eco-Friendly</b>No sachet water allowed.</p>
-                <p><b>8. No Personal Storage</b>No items left overnight.</p>
-                <p><b>9. Share the Space</b>Allow others to "work in".</p>
-                <p><b>10. Respect the Staff</b>Follow all management instructions.</p>
+                <p><b>1. Leave No Trace</b>Gym must look the same when you leave as when you arrived.</p>
+                <p><b>2. Re-rack & Wipe</b>Return all plates to racks and wipe down equipment.</p>
+                <p><b>3. Silence the Ego</b>Weights are for lifting, not dropping. Control the movement.</p>
+                <p><b>4. Respect the Perimeter</b>No filming or photographing members without consent.</p>
+                <p><b>5. Darkness Prep</b>Proper gym attire required (darker tones preferred).</p>
+                <p><b>6. No Slippers</b>For safety, closed-toe footwear only.</p>
+                <p><b>7. No Sachet Water</b>Keep the facility clean from plastic waste.</p>
+                <p><b>8. No Personal Storage</b>Items must not be left in the gym overnight.</p>
             </div>
         </div>
     </div>
@@ -176,20 +156,21 @@
                 <input type="text" id="mName" placeholder="Full Name" required>
                 <input type="text" id="mAlias" placeholder="Alias (For MoMo Ref)" required>
                 <input type="tel" id="mPhone" placeholder="Phone Number" required>
-                <input type="text" id="mLocation" placeholder="Location" required>
+                <input type="text" id="mLocation" placeholder="Location (e.g., Akropong, Obosomasi)" required>
                 
                 <select id="mType" required>
                     <option value="" disabled selected>Membership Type</option>
                     <option value="Full Member">Full Member</option>
                     <option value="Student">Student</option>
+                    <option value="Temporary Member">Temporary Member</option>
                     <option value="Walk-in">Walk-in</option>
                 </select>
 
                 <select id="mSub" required>
                     <option value="" disabled selected>Subscription Plan</option>
                     <option value="30">Monthly (GH₵ 200)</option>
-                    <option value="180">6 Months (20% Off)</option>
-                    <option value="365">1 Year (40% Off)</option>
+                    <option value="180">6 Months (GH₵ 1080 - 20% Off)</option>
+                    <option value="365">1 Year (GH₵ 1920 - 40% Off)</option>
                 </select>
                 <button type="submit">Join & Subscribe</button>
             </form>
@@ -200,25 +181,26 @@
         <div class="card">
             <h3>Payment Gateway</h3>
             <div class="momo-box">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/MTN_Logo.svg/800px-MTN_Logo.svg.png" width="40"><br>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/MTN_Logo.svg/800px-MTN_Logo.svg.png" width="40" style="margin-bottom: 10px;"><br>
                 <p>MoMo Number: <br><b style="font-size: 1.5rem; color: var(--gold);">0597219410</b></p>
                 <p>Name: <b>Ben Shadow</b></p>
                 <p>Reference: <b id="refDisplay" style="color:var(--gold)">Your Alias</b></p>
             </div>
+            <p style="font-size:0.8rem; text-align:center; margin-top:20px; color: #888;">Activation occurs once Ben Shadow confirms receipt.</p>
         </div>
     </div>
 
     <div id="admin" class="screen">
         <div id="adminLock">
             <div class="card">
-                <h3>Admin Access</h3>
+                <h3>Admin Secure Access</h3>
                 <input type="password" id="adminPass" placeholder="Access Code">
                 <button onclick="unlockAdmin()">Enter Registry</button>
             </div>
         </div>
         <div id="adminPanel" style="display:none;">
             <div class="card">
-                <h3>Cloud Registry</h3>
+                <h3>Registry Manager</h3>
                 <input type="text" id="adminSearch" placeholder="Search Member..." onkeyup="doSearch()">
                 <div id="adminResults"></div>
             </div>
@@ -234,22 +216,6 @@
 </div>
 
 <script>
-    // --- FIREBASE CONFIG ---
-    const firebaseConfig = {
-        apiKey: "REPLACE_WITH_YOUR_API_KEY",
-        databaseURL: "REPLACE_WITH_YOUR_DATABASE_URL",
-        projectId: "REPLACE_WITH_YOUR_PROJECT_ID"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // VIEW IMAGE FUNCTION
-    function viewImg(src) {
-        document.getElementById('lightboxImg').src = src;
-        document.getElementById('lightbox').style.display = 'flex';
-    }
-
     function nav(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -263,24 +229,25 @@
     function saveMember(e) {
         e.preventDefault();
         const member = {
+            id: Date.now(),
             name: document.getElementById('mName').value,
             alias: document.getElementById('mAlias').value,
             phone: document.getElementById('mPhone').value,
-            location: document.getElementById('mLocation').value,
+            location: document.getElementById('mLocation').value, // Saved Location
             type: document.getElementById('mType').value,
             duration: parseInt(document.getElementById('mSub').value),
-            expiry: null,
-            timestamp: Date.now()
+            expiry: null, 
+            voucher: ""
         };
-
-        database.ref('members').push(member)
-            .then(() => {
-                localStorage.setItem('lastAlias', member.alias);
-                e.target.reset();
-                alert("Registration Successful!");
-                nav('payment');
-            })
-            .catch(err => alert("Error: " + err.message));
+        let db = JSON.parse(localStorage.getItem('shadowSubs') || "[]");
+        db.push(member);
+        localStorage.setItem('shadowSubs', JSON.stringify(db));
+        localStorage.setItem('lastAlias', member.alias);
+        
+        e.target.reset(); // Clears all fields including location
+        
+        alert("Success! Welcome to Shadow Gym.");
+        nav('payment');
     }
 
     function unlockAdmin() {
@@ -293,42 +260,48 @@
 
     function doSearch() {
         const query = document.getElementById('adminSearch').value.toLowerCase();
+        const db = JSON.parse(localStorage.getItem('shadowSubs') || "[]");
         const area = document.getElementById('adminResults');
+        area.innerHTML = "";
         const now = new Date();
 
-        database.ref('members').on('value', (snapshot) => {
-            area.innerHTML = "";
-            const members = snapshot.val();
-            for (let id in members) {
-                const m = members[id];
-                if (m.name.toLowerCase().includes(query) || m.alias.toLowerCase().includes(query)) {
-                    let statusText = "INACTIVE";
-                    let statusClass = "status-expired";
-                    if(m.expiry) {
-                        const expDate = new Date(m.expiry);
-                        if(expDate > now) {
-                            statusText = "ACTIVE - Ends: " + expDate.toLocaleDateString();
-                            statusClass = "status-active";
-                        }
-                    }
-                    area.innerHTML += `
-                        <div style="background:#111; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid #333;">
-                            <b style="color:var(--gold)">${m.name}</b> (${m.alias})<br>
-                            <small>${m.type} | ${m.location}</small><br>
-                            Status: <span class="${statusClass}">${statusText}</span><br>
-                            <button onclick="activateSub('${id}', ${m.duration})" style="padding:10px; font-size:0.7rem; background:#444; color:white;">Activate</button>
-                        </div>`;
-                }
+        db.filter(m => m.name.toLowerCase().includes(query) || m.alias.toLowerCase().includes(query)).forEach(m => {
+            let statusText = "INACTIVE";
+            let statusClass = "status-expired";
+            
+            if(m.expiry) {
+                const expDate = new Date(m.expiry);
+                if(expDate > now) {
+                    statusText = "ACTIVE - Ends: " + expDate.toLocaleDateString();
+                    statusClass = "status-active";
+                } else { statusText = "EXPIRED"; }
             }
+
+            area.innerHTML += `
+                <div style="background:#111; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid #333;">
+                    <b style="color:var(--gold)">${m.name}</b> (${m.alias})<br>
+                    <small>${m.type} | ${m.phone}</small><br>
+                    <small style="color: #888;">Location: ${m.location || 'N/A'}</small><br> Status: <span class="${statusClass}">${statusText}</span><br>
+                    <button onclick="activateSub(${m.id})" style="padding:10px; font-size:0.7rem;">Activate ${m.duration} Days</button>
+                </div>`;
         });
     }
 
-    function activateSub(fbId, days) {
-        const exp = new Date();
-        exp.setDate(exp.getDate() + days);
-        database.ref('members/' + fbId).update({ expiry: exp.toISOString() }).then(() => alert("Activated!"));
+    function activateSub(id) {
+        let db = JSON.parse(localStorage.getItem('shadowSubs'));
+        const now = new Date();
+        db = db.map(m => {
+            if(m.id === id) {
+                const exp = new Date();
+                exp.setDate(now.getDate() + m.duration);
+                m.expiry = exp.toISOString();
+            }
+            return m;
+        });
+        localStorage.setItem('shadowSubs', JSON.stringify(db));
+        doSearch();
+        alert("Voucher Activated!");
     }
 </script>
 </body>
-                        </html>
-    
+</html>
