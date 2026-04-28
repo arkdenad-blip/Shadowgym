@@ -3,246 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Gym App</title>
+    <title>Shadow Gym - Titan Edition</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --gold: #d4af37;
-            --dark-overlay: rgba(10, 31, 20, 0.94);
-            --card-bg: rgba(25, 25, 25, 0.98);
+        :root { 
+            --gold: #d4af37; 
+            --dark-overlay: rgba(0, 0, 0, 0.85); 
+            --card-bg: rgba(20, 20, 20, 0.95); 
         }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            color: #f0f0f0;
-            /* Dynamic background image */
-            background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600') no-repeat center center fixed;
-            background-size: cover;
-            padding-bottom: 90px;
-        }
-
-        .app-overlay {
-            background: var(--dark-overlay);
-            min-height: 100vh;
-            width: 100%;
-        }
-
-        /* Top Header */
-        .header {
-            text-align: center;
-            padding: 40px 20px;
-            border-bottom: 2px solid var(--gold);
-            background: rgba(0,0,0,0.7);
-        }
-
-        .header h1 { 
-            margin: 0; 
-            color: var(--gold); 
-            letter-spacing: 5px; 
-            font-size: 2rem;
-            text-shadow: 2px 2px 4px #000;
-        }
-
-        /* Bottom Menu Bar */
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: #000;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            border-top: 2px solid var(--gold);
-            z-index: 1000;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
-        }
-
-        .nav-item {
-            color: #888;
-            text-decoration: none;
-            font-size: 0.65rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
-        .nav-item.active { color: var(--gold); }
-
-        /* Content Screens */
-        .screen { display: none; padding: 25px; animation: slideUp 0.4s ease; }
-        .screen.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* UI Cards */
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--gold);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        }
-
-        h2, h3 { color: var(--gold); margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 8px; }
         
-        /* Inputs & Buttons */
-        input, select, textarea {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            background: #111;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 8px;
-            box-sizing: border-box;
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            color: #f0f0f0; 
+            background: #000;
+            padding-bottom: 90px; 
         }
 
-        button {
-            width: 100%;
-            padding: 16px;
-            background: var(--gold);
-            color: #000;
-            border: none;
-            font-weight: bold;
-            border-radius: 10px;
-            text-transform: uppercase;
-            cursor: pointer;
-            margin-top: 10px;
+        /* Hero Background with Animation */
+        .app-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            filter: brightness(0.4);
         }
 
-        /* Beautiful Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .app-overlay { min-height: 100vh; width: 100%; background: var(--dark-overlay); }
+
+        .header { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+        }
+        
+        .header h1 { 
+            margin: 0; color: var(--gold); 
+            letter-spacing: 8px; font-size: 2.2rem; 
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Premium Scroller */
+        .featured-scroller {
+            display: flex;
+            overflow-x: auto;
             gap: 15px;
-            margin: 15px 0;
+            padding: 0 20px 20px;
+            scrollbar-width: none;
         }
-
-        .gallery-grid img {
-            width: 100%;
-            height: 130px;
-            object-fit: cover;
-            border-radius: 10px;
+        .featured-scroller::-webkit-scrollbar { display: none; }
+        
+        .featured-card {
+            min-width: 280px;
+            height: 180px;
+            border-radius: 15px;
+            background-size: cover;
+            background-position: center;
             border: 1px solid var(--gold);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: flex-end;
+            padding: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        /* Shadow Code Items */
-        .rule-box { border-bottom: 1px solid #333; padding: 10px 0; }
-        .rule-box b { color: var(--gold); display: block; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #333; z-index: 1000; }
+        .nav-item { color: #666; text-decoration: none; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--gold); transform: translateY(-5px); }
+        .nav-item i { font-size: 1.5rem; margin-bottom: 5px; }
 
-        /* Admin & Payment UI */
-        .status-paid { color: #00ff00; font-weight: bold; }
-        .status-unpaid { color: #ff4444; font-weight: bold; }
-        .momo-alert { background: #000; border: 2px dashed var(--gold); padding: 15px; text-align: center; }
+        .screen { display: none; padding: 0 20px; animation: slideUp 0.4s ease-out; }
+        .screen.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 25px; 
+            margin-bottom: 25px; 
+            border: 1px solid #333;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        }
+
+        h3 { color: var(--gold); margin-top: 0; letter-spacing: 2px; text-transform: uppercase; font-size: 1rem; border-left: 3px solid var(--gold); padding-left: 10px; }
+
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .gallery-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; transition: 0.3s; }
+        .gallery-grid img:hover { transform: scale(1.05); border: 1px solid var(--gold); }
+
+        input, select { width: 100%; padding: 16px; margin: 12px 0; background: #111; border: 1px solid #333; color: white; border-radius: 12px; font-size: 1rem; }
+        button { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; font-weight: 800; border-radius: 12px; text-transform: uppercase; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
+
+        .momo-box { background: linear-gradient(45deg, #000, #111); border: 1px solid var(--gold); padding: 25px; text-align: center; border-radius: 15px; }
+        .rules-list p { font-size: 0.9rem; margin-bottom: 15px; color: #bbb; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .rules-list b { color: var(--gold); display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
+<div class="app-bg"></div>
 <div class="app-overlay">
     <div class="header">
         <h1>SHADOW GYM</h1>
-        <small>AKROPONG AKUAPEM • EST. 1999</small>
+        <small style="color: #888; letter-spacing: 2px;">EST. 1999 • AKROPONG AKUAPEM</small>
     </div>
 
     <div id="home" class="screen active">
-        <div class="card">
-            <h3>Legendary Origins</h3>
-            <p>Founded in 1999 by <b>Ben Shadow</b>. We produced champions like <b>Kofi Gyiwa, Kobby, Dennis, & Kasay</b>. Home of Akropong Strongest.</p>
-        </div>
-
-        <div class="card">
-            <h3>Gallery</h3>
-            <div class="gallery-grid">
-                <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=400">
-                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?q=80&w=400">
-                <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=400">
-                <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400">
+        <div class="featured-scroller">
+            <div class="featured-card" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600')">
+                <span>Power Lifting Zone</span>
+            </div>
+            <div class="featured-card" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600')">
+                <span>Cardio Mastery</span>
+            </div>
+            <div class="featured-card" style="background-image: linear-gradient(transparent, black), url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600')">
+                <span>Shadow Intensity</span>
             </div>
         </div>
 
         <div class="card">
+            <h3>Elite Gallery</h3>
+            <div class="gallery-grid">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=400">
+                <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=400">
+            </div>
+            <p style="font-size: 0.9rem; text-align: center; color: #888;">Join the legacy of <b>Kofi Gyiwa, Kobby, Dennis, & Kasay.</b></p>
+        </div>
+        
+        <div class="card">
             <h3>The Shadow Code</h3>
-            <div class="rule-box"><b>1. Leave No Trace</b>Return the weight to original state.</div>
-            <div class="rule-box"><b>2. Re-rack & Wipe</b>Hygiene is mandatory.</div>
-            <div class="rule-box"><b>3. Silence Ego</b>No dropping weights.</div>
-            <div class="rule-box"><b>4. No Slippers</b>Safety footwear only.</div>
-            <div class="rule-box"><b>5. No Sachet Water</b>Keep the facility clean.</div>
-            <div class="rule-box"><b>6. 30 days ghosting</b>Forfeit membership after 30 days absence.</div>;
+            <div class="rules-list">
+                <p><b>1. Leave No Trace</b>Gym must look the same when you leave as when you arrived.</p>
+                <p><b>2. Re-rack & Wipe</b>Return all plates to racks and wipe down equipment.</p>
+                <p><b>3. Silence the Ego</b>Weights are for lifting, not dropping. Control the movement.</p>
+                <p><b>4. Respect the Perimeter</b>No filming or photographing members without consent.</p>
+                <p><b>5. Darkness Prep</b>Proper gym attire required (darker tones preferred).</p>
+                <p><b>6. No Slippers</b>For safety, closed-toe footwear only.</p>
+                <p><b>7. No Sachet Water</b>Keep the facility clean from plastic waste.</p>
+                <p><b>8. No Personal Storage</b>Items must not be left in the gym overnight.</p>
+            </div>
         </div>
     </div>
 
     <div id="register" class="screen">
         <div class="card">
-            <h3>Registration</h3>
-            <form id="regForm" onsubmit="saveMember(event)">
+            <h3>New Enrollment</h3>
+            <form onsubmit="saveMember(event)">
                 <input type="text" id="mName" placeholder="Full Name" required>
-                <input type="text" id="mAlias" placeholder="Alias/Nickname" required>
+                <input type="text" id="mAlias" placeholder="Alias (For MoMo Ref)" required>
                 <input type="tel" id="mPhone" placeholder="Phone Number" required>
-                <input type="text" id="mLoc" placeholder="Location">
-                <input type="text" id="mHealth" placeholder="Health Condition">
-                <input type="text" id="mAllergy" placeholder="Allergies">
-                <select id="mPlan">
+                
+                <select id="mType">
+                    <option value="" disabled selected>Membership Type</option>
                     <option value="Full Member">Full Member</option>
                     <option value="Student">Student</option>
-                    <option value="Walk in">Walk in</option>
-                    <option value="Temporary">Temporary</option>
+                    <option value="Temporary Member">Temporary Member</option>
+                    <option value="Walk-in">Walk-in</option>
                 </select>
-                <button type="submit">Join the Shadow Squad</button>
+
+                <select id="mSub">
+                    <option value="" disabled selected>Subscription Plan</option>
+                    <option value="30">Monthly (GH₵ 200)</option>
+                    <option value="180">6 Months (GH₵ 1080 - 20% Off)</option>
+                    <option value="365">1 Year (GH₵ 1920 - 40% Off)</option>
+                </select>
+                <button type="submit">Join & Subscribe</button>
             </form>
         </div>
     </div>
 
     <div id="payment" class="screen">
         <div class="card">
-            <h3>Dues & Discounts</h3>
-            <p>Monthly: <b>GH₵ 200</b></p>
-            <p>6 Months (20% Off): <b>GH₵ 1080</b> (GH₵ 180/mo)</p>
-            <p>1 Year (40% Off): <b>GH₵ 1920</b> (GH₵ 160/mo)</p>
-        </div>
-        <div id="paymentInstructions" class="card" style="display:none;">
-            <h3>Official MoMo Payment</h3>
-            <div class="momo-alert">
-                <p>Send to: <b>0597219410</b></p>
-                <p>Account: <b>Ben Shadow</b></p>
-                <p>REF: <b>[Your Alias]</b></p>
+            <h3>Payment Gateway</h3>
+            <div class="momo-box">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/MTN_Logo.svg/800px-MTN_Logo.svg.png" width="40" style="margin-bottom: 10px;"><br>
+                <p>MoMo Number: <br><b style="font-size: 1.5rem; color: var(--gold);">0597219410</b></p>
+                <p>Name: <b>Ben Shadow</b></p>
+                <p>Reference: <b id="refDisplay" style="color:var(--gold)">Your Alias</b></p>
             </div>
-            <p style="font-size:0.8rem; text-align:center; margin-top:10px;">Unique voucher will generate after admin confirms MoMo receipt.</p>
-        </div>
-    </div>
-
-    <div id="info" class="screen">
-        <div class="card">
-            <h3>Workout Plan</h3>
-            <p>• Monthly Group Walk<br>• Cardio & Power Lifting<br>• Body Building</p>
-        </div>
-        <div class="card">
-            <h3>Trainer Booking</h3>
-            <p>Dennis: 0245273332<br>Kasay: 0246910032<br>Obed: 0543392756<br>Kobby: 0246948846</p>
-        </div>
-        <div class="card">
-            <h3>Gym Shop</h3>
-            <p>Towel, Belt, Wrist Wraps, Knee Straps, Mats & Supplements available.</p>
+            <p style="font-size:0.8rem; text-align:center; margin-top:20px; color: #888;">Activation occurs once Ben Shadow confirms receipt.</p>
         </div>
     </div>
 
     <div id="admin" class="screen">
         <div id="adminLock">
             <div class="card">
-                <h3>Admin Portal</h3>
-                <input type="password" id="adminPass" placeholder="Enter Access Code">
-                <button onclick="unlockAdmin()">Unlock Registry</button>
+                <h3>Admin Secure Access</h3>
+                <input type="password" id="adminPass" placeholder="Access Code">
+                <button onclick="unlockAdmin()">Enter Registry</button>
             </div>
         </div>
         <div id="adminPanel" style="display:none;">
             <div class="card">
-                <h3>Member Search</h3>
-                <input type="text" id="adminSearch" placeholder="Search by Name/Alias..." onkeyup="doSearch()">
+                <h3>Registry Manager</h3>
+                <input type="text" id="adminSearch" placeholder="Search Member..." onkeyup="doSearch()">
                 <div id="adminResults"></div>
             </div>
         </div>
@@ -252,24 +208,21 @@
         <a class="nav-item active" onclick="nav('home')"><i class="fa fa-home"></i>Home</a>
         <a class="nav-item" onclick="nav('register')"><i class="fa fa-user-plus"></i>Join</a>
         <a class="nav-item" onclick="nav('payment')"><i class="fa fa-credit-card"></i>Pay</a>
-        <a class="nav-item" onclick="nav('info')"><i class="fa fa-dumbbell"></i>Info</a>
         <a class="nav-item" onclick="nav('admin')"><i class="fa fa-lock"></i>Admin</a>
     </nav>
 </div>
 
 <script>
-    // NAVIGATION LOGIC
     function nav(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        if(event) event.currentTarget.classList.add('active');
         if(id === 'payment' && localStorage.getItem('lastAlias')) {
-            document.getElementById('paymentInstructions').style.display = 'block';
+            document.getElementById('refDisplay').innerText = localStorage.getItem('lastAlias');
         }
     }
 
-    // REGISTRATION
     function saveMember(e) {
         e.preventDefault();
         const member = {
@@ -277,60 +230,71 @@
             name: document.getElementById('mName').value,
             alias: document.getElementById('mAlias').value,
             phone: document.getElementById('mPhone').value,
-            plan: document.getElementById('mPlan').value,
-            paid: false,
+            type: document.getElementById('mType').value,
+            duration: parseInt(document.getElementById('mSub').value),
+            expiry: null, 
             voucher: ""
         };
-        let db = JSON.parse(localStorage.getItem('shadowDB') || "[]");
+        let db = JSON.parse(localStorage.getItem('shadowSubs') || "[]");
         db.push(member);
-        localStorage.setItem('shadowDB', JSON.stringify(db));
+        localStorage.setItem('shadowSubs', JSON.stringify(db));
         localStorage.setItem('lastAlias', member.alias);
-        alert("Registration saved! Go to 'Pay' tab to finish.");
+        alert("Success! Welcome to Shadow Gym.");
         nav('payment');
     }
 
-    // ADMIN AUTH
-    const ADMIN_CODE = "SHADOWADMIN"; // Change this if you want
     function unlockAdmin() {
-        if(document.getElementById('adminPass').value === ADMIN_CODE) {
+        if(document.getElementById('adminPass').value === "SHADOWADMIN") {
             document.getElementById('adminLock').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             doSearch();
-        } else {
-            alert("Wrong code!");
-        }
+        } else { alert("Unauthorized"); }
     }
 
-    // ADMIN SEARCH & CONFIRMATION
     function doSearch() {
         const query = document.getElementById('adminSearch').value.toLowerCase();
-        const db = JSON.parse(localStorage.getItem('shadowDB') || "[]");
+        const db = JSON.parse(localStorage.getItem('shadowSubs') || "[]");
         const area = document.getElementById('adminResults');
         area.innerHTML = "";
+        const now = new Date();
 
         db.filter(m => m.name.toLowerCase().includes(query) || m.alias.toLowerCase().includes(query)).forEach(m => {
+            let statusText = "INACTIVE";
+            let statusClass = "status-expired";
+            
+            if(m.expiry) {
+                const expDate = new Date(m.expiry);
+                if(expDate > now) {
+                    statusText = "ACTIVE - Ends: " + expDate.toLocaleDateString();
+                    statusClass = "status-active";
+                } else { statusText = "EXPIRED"; }
+            }
+
             area.innerHTML += `
-                <div style="background:#000; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #333;">
-                    <b>${m.name}</b> (${m.alias})<br>
-                    Status: <span class="${m.paid ? 'status-paid' : 'status-unpaid'}">${m.paid ? 'PAID: ' + m.voucher : 'UNPAID'}</span>
-                    <br><small>${m.phone} | ${m.plan}</small>
-                    ${!m.paid ? `<button onclick="confirmPay(${m.id})" style="padding:8px; font-size:0.7rem; margin-top:5px;">Confirm Payment</button>` : ''}
+                <div style="background:#111; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid #333;">
+                    <b style="color:var(--gold)">${m.name}</b> (${m.alias})<br>
+                    <small>${m.type} | ${m.phone}</small><br>
+                    Status: <span class="${statusClass}">${statusText}</span><br>
+                    <button onclick="activateSub(${m.id})" style="padding:10px; font-size:0.7rem;">Activate ${m.duration} Days</button>
                 </div>`;
         });
     }
 
-    function confirmPay(id) {
-        let db = JSON.parse(localStorage.getItem('shadowDB'));
-        const voucher = "V-" + Math.floor(1000 + Math.random() * 9000) + "-SHADOW";
+    function activateSub(id) {
+        let db = JSON.parse(localStorage.getItem('shadowSubs'));
+        const now = new Date();
         db = db.map(m => {
-            if(m.id === id) { m.paid = true; m.voucher = voucher; }
+            if(m.id === id) {
+                const exp = new Date();
+                exp.setDate(now.getDate() + m.duration);
+                m.expiry = exp.toISOString();
+            }
             return m;
         });
-        localStorage.setItem('shadowDB', JSON.stringify(db));
+        localStorage.setItem('shadowSubs', JSON.stringify(db));
         doSearch();
-        alert("Payment confirmed! Voucher generated: " + voucher);
+        alert("Voucher Activated!");
     }
 </script>
 </body>
-    </html>
-                                                       
+</html>
