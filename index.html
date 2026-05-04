@@ -1,88 +1,316 @@
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Gym - Cloud Edition</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        :root { 
+            --gold: #d4af37; 
+            --dark-overlay: rgba(0, 0, 0, 0.85); 
+            --card-bg: rgba(20, 20, 20, 0.95); 
+        }
+        
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            color: #f0f0f0; 
+            background: #000;
+            padding-bottom: 90px; 
+        }
+
+        .app-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            filter: brightness(0.4);
+        }
+
+        .app-overlay { min-height: 100vh; width: 100%; background: var(--dark-overlay); }
+
+        .header { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+        }
+        
+        .header h1 { 
+            margin: 0; color: var(--gold); 
+            letter-spacing: 8px; font-size: 2.2rem; 
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #333; z-index: 1000; }
+        .nav-item { color: #666; text-decoration: none; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--gold); transform: translateY(-5px); }
+        .nav-item i { font-size: 1.5rem; margin-bottom: 5px; }
+
+        .screen { display: none; padding: 0 20px; animation: slideUp 0.4s ease-out; }
+        .screen.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 25px; 
+            margin-bottom: 25px; 
+            border: 1px solid #333;
+        }
+
+        h3 { color: var(--gold); margin-top: 0; letter-spacing: 2px; text-transform: uppercase; font-size: 1rem; border-left: 3px solid var(--gold); padding-left: 10px; }
+
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .gallery-grid img { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; border: 1px solid #222; cursor: pointer; }
+
+        input, select { width: 100%; padding: 16px; margin: 12px 0; background: #111; border: 1px solid #333; color: white; border-radius: 12px; box-sizing: border-box;}
+        button { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; font-weight: 800; border-radius: 12px; text-transform: uppercase; cursor: pointer; }
+
+        .momo-box { background: #111; border: 1px solid var(--gold); padding: 20px; text-align: center; border-radius: 15px; margin-top: 15px;}
+        .status-active { color: #00ff00; font-weight: bold; }
+        .status-expired { color: #ff4444; font-weight: bold; }
+        
+        #lightbox {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
+        }
+        #lightbox img { max-width: 90%; max-height: 80%; border: 2px solid var(--gold); }
+    </style>
+</head>
+<body>
+
+<div id="lightbox" onclick="this.style.display='none'"><img id="lightboxImg" src=""></div>
+
+<div class="app-bg"></div>
+<div class="app-overlay">
+    <div class="header">
+        <h1>SHADOW GYM</h1>
+        <small style="color: #888;">EST. 1999 • AKROPONG AKUAPEM</small>
+    </div>
+
+    <div id="home" class="screen active">
+        <div class="card">
+            <h3>Your Status</h3>
+            <div id="userStatusArea">
+                <p style="font-size: 0.8rem; color: #888;">Checking for local membership...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Elite Gallery</h3>
+            <div class="gallery-grid">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef03a7403f?q=80&w=400" onclick="viewImg(this.src)">
+                <img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?q=80&w=400" onclick="viewImg(this.src)">
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>The Shadow Code</h3>
+            <div style="font-size: 0.8rem; color: #bbb;">
+                <p><b>1. Leave No Trace:</b> Keep the gym clean.</p>
+                <p><b>2. Re-rack & Wipe:</b> Respect the equipment.</p>
+                <p><b>3. Silence the Ego:</b> No weight dropping.</p>
+                <p><b>7. Eco-Friendly:</b> No sachet water allowed.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="register" class="screen">
+        <div class="card">
+            <h3>New Enrollment</h3>
+            <form id="regForm" onsubmit="saveMember(event)">
+                <input type="text" id="mName" placeholder="Full Name" required>
+                <input type="text" id="mAlias" placeholder="Alias (Username)" required>
+                <input type="tel" id="mPhone" placeholder="Phone Number" required>
+                <input type="text" id="mLocation" placeholder="Location" required>
+                
+                <select id="mType" required>
+                    <option value="" disabled selected>Membership Type</option>
+                    <option value="Full Member">Full Member</option>
+                    <option value="Student">Student</option>
+                    <option value="Walk-in">Walk-in</option>
+                </select>
+
+                <select id="mSub" required>
+                    <option value="" disabled selected>Subscription Plan</option>
+                    <option value="30">Monthly (GH₵ 200)</option>
+                    <option value="180">6 Months</option>
+                    <option value="365">1 Year</option>
+                </select>
+                <button type="submit">Join & Subscribe</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="payment" class="screen">
+        <div class="card">
+            <h3>Payment Gateway</h3>
+            <div class="momo-box">
+                <p>MTN Mobile Money</p>
+                <b style="font-size: 1.3rem; color: var(--gold);">0597219410</b><br>
+                <small>Name: Ben Shadow</small><br><br>
+                <small>Use Reference: <b id="refDisplay" style="color:var(--gold)">---</b></small>
+            </div>
+            <p style="font-size: 0.7rem; color: #777; margin-top: 15px;">After payment, the admin will activate your cloud account remotely.</p>
+        </div>
+    </div>
+
+    <div id="admin" class="screen">
+        <div id="adminLock">
+            <div class="card">
+                <h3>Admin Access</h3>
+                <input type="password" id="adminPass" placeholder="Access Code">
+                <button onclick="unlockAdmin()">Enter Registry</button>
+            </div>
+        </div>
+        <div id="adminPanel" style="display:none;">
+            <div class="card">
+                <h3>Cloud Registry</h3>
+                <input type="text" id="adminSearch" placeholder="Search Alias..." onkeyup="doSearch()">
+                <div id="adminResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <a class="nav-item active" onclick="nav('home')"><i class="fa fa-home"></i>Home</a>
+        <a class="nav-item" onclick="nav('register')"><i class="fa fa-user-plus"></i>Join</a>
+        <a class="nav-item" onclick="nav('payment')"><i class="fa fa-credit-card"></i>Pay</a>
+        <a class="nav-item" onclick="nav('admin')"><i class="fa fa-lock"></i>Admin</a>
+    </nav>
+</div>
 
 <script>
-  // PASTE YOUR FIREBASE CONFIG HERE
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    databaseURL: "YOUR_DATABASE_URL",
-    projectId: "YOUR_PROJECT_ID",
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-
-  // UPGRADED SAVE FUNCTION (Syncs to Cloud)
-  function saveMember(e) {
-    e.preventDefault();
-    const member = {
-        name: document.getElementById('mName').value,
-        alias: document.getElementById('mAlias').value,
-        phone: document.getElementById('mPhone').value,
-        location: document.getElementById('mLocation').value,
-        type: document.getElementById('mType').value,
-        duration: parseInt(document.getElementById('mSub').value),
-        expiry: null,
-        regDate: new Date().toISOString()
+    // --- FIREBASE CONFIG ---
+    const firebaseConfig = {
+        apiKey: "REPLACE_WITH_YOUR_API_KEY",
+        databaseURL: "REPLACE_WITH_YOUR_DATABASE_URL",
+        projectId: "REPLACE_WITH_YOUR_PROJECT_ID"
     };
+    
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-    // Push to Firebase instead of LocalStorage
-    database.ref('members').push(member)
-        .then(() => {
-            localStorage.setItem('lastAlias', member.alias);
-            e.target.reset();
-            alert("Success! Your data is now in the Shadow Cloud.");
-            nav('payment');
-        })
-        .catch(err => alert("Error: " + err.message));
-  }
+    // Check status on Home Screen Load
+    window.onload = checkSubStatus;
 
-  // UPGRADED SEARCH FUNCTION (Fetches from Cloud)
-  function doSearch() {
-    const query = document.getElementById('adminSearch').value.toLowerCase();
-    const area = document.getElementById('adminResults');
-    const now = new Date();
+    function viewImg(src) {
+        document.getElementById('lightboxImg').src = src;
+        document.getElementById('lightbox').style.display = 'flex';
+    }
 
-    // Listen for data changes in real-time
-    database.ref('members').on('value', (snapshot) => {
-        area.innerHTML = "";
-        const data = snapshot.val();
+    function nav(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if(event) event.currentTarget.classList.add('active');
         
-        for (let id in data) {
-            const m = data[id];
-            if (m.name.toLowerCase().includes(query) || m.alias.toLowerCase().includes(query)) {
-                let statusText = "INACTIVE";
-                let statusClass = "status-expired";
-                
+        if(id === 'payment') {
+            const alias = localStorage.getItem('shadowAlias');
+            document.getElementById('refDisplay').innerText = alias ? alias : "REGISTER FIRST";
+        }
+        if(id === 'home') checkSubStatus();
+    }
+
+    // --- SAVE TO FIREBASE ---
+    function saveMember(e) {
+        e.preventDefault();
+        const alias = document.getElementById('mAlias').value.trim().toLowerCase();
+        
+        const member = {
+            name: document.getElementById('mName').value,
+            alias: alias,
+            phone: document.getElementById('mPhone').value,
+            location: document.getElementById('mLocation').value,
+            type: document.getElementById('mType').value,
+            duration: parseInt(document.getElementById('mSub').value),
+            expiry: null,
+            timestamp: Date.now()
+        };
+
+        // We use the alias as the key so it's easy to find
+        database.ref('members/' + alias).set(member)
+            .then(() => {
+                localStorage.setItem('shadowAlias', alias);
+                alert("Cloud Registration Sent!");
+                nav('payment');
+            })
+            .catch(err => alert("Error: " + err.message));
+    }
+
+    // --- CHECK STATUS FROM FIREBASE (For the Member) ---
+    function checkSubStatus() {
+        const alias = localStorage.getItem('shadowAlias');
+        const area = document.getElementById('userStatusArea');
+        if(!alias) {
+            area.innerHTML = "<button onclick='nav(\"register\")'>Register Now</button>";
+            return;
+        }
+
+        database.ref('members/' + alias).once('value', (snapshot) => {
+            const m = snapshot.val();
+            if(m) {
+                let status = "<span class='status-expired'>PENDING ACTIVATION</span>";
                 if(m.expiry) {
-                    const expDate = new Date(m.expiry);
-                    if(expDate > now) {
-                        statusText = "ACTIVE - Ends: " + expDate.toLocaleDateString();
-                        statusClass = "status-active";
+                    const exp = new Date(m.expiry);
+                    if(exp > new Date()) {
+                        status = `<span class='status-active'>ACTIVE</span><br><small>Expires: ${exp.toLocaleDateString()}</small>`;
+                    } else {
+                        status = "<span class='status-expired'>EXPIRED</span>";
                     }
                 }
-
-                area.innerHTML += `
-                    <div style="background:#111; padding:15px; border-radius:12px; margin-bottom:12px; border:1px solid #333;">
-                        <b style="color:var(--gold)">${m.name}</b> (${m.alias})<br>
-                        <small>${m.type} | ${m.phone}</small><br>
-                        <small style="color: #888;">Location: ${m.location}</small><br>
-                        Status: <span class="${statusClass}">${statusText}</span><br>
-                        <button onclick="activateSub('${id}', ${m.duration})" style="padding:10px; font-size:0.7rem;">Activate ${m.duration} Days</button>
-                    </div>`;
+                area.innerHTML = `Welcome back, <b>${m.name}</b><br>Status: ${status}`;
             }
-        }
-    });
-  }
+        });
+    }
 
-  // UPGRADED ACTIVATION (Updates Cloud)
-  function activateSub(firebaseId, duration) {
-    const exp = new Date();
-    exp.setDate(exp.getDate() + duration);
-    
-    database.ref('members/' + firebaseId).update({
-        expiry: exp.toISOString()
-    }).then(() => alert("Member Activated on all devices!"));
-  }
+    function unlockAdmin() {
+        if(document.getElementById('adminPass').value === "SHADOWADMIN") {
+            document.getElementById('adminLock').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            doSearch();
+        } else { alert("Unauthorized"); }
+    }
+
+    // --- ADMIN SEARCH (Real-time Cloud Sync) ---
+    function doSearch() {
+        const query = document.getElementById('adminSearch').value.toLowerCase();
+        const area = document.getElementById('adminResults');
+        const now = new Date();
+
+        database.ref('members').on('value', (snapshot) => {
+            area.innerHTML = "";
+            const members = snapshot.val();
+            for (let id in members) {
+                const m = members[id];
+                if (m.alias.includes(query) || m.name.toLowerCase().includes(query)) {
+                    let btnText = "Activate Account";
+                    let stClass = "status-expired";
+                    if(m.expiry && new Date(m.expiry) > now) stClass = "status-active";
+
+                    area.innerHTML += `
+                        <div style="background:#000; padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid #222;">
+                            <b>${m.name}</b> (@${m.alias})<br>
+                            <small>Plan: ${m.duration} Days | Loc: ${m.location}</small><br>
+                            <button onclick="activateSub('${id}', ${m.duration})" style="padding:8px; margin-top:10px; font-size:0.7rem;">Activate</button>
+                        </div>`;
+                }
+            }
+        });
+    }
+
+    function activateSub(alias, days) {
+        const exp = new Date();
+        exp.setDate(exp.getDate() + days);
+        database.ref('members/' + alias).update({ expiry: exp.toISOString() })
+            .then(() => alert("Member activated in the cloud!"));
+    }
 </script>
+</body>
+</html>
