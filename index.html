@@ -34,16 +34,8 @@
             filter: brightness(0.3) grayscale(0.5);
         }
 
-        .header { 
-            text-align: center; 
-            padding: 50px 20px 30px; 
-        }
-        
-        .header h1 { 
-            margin: 0; color: var(--gold); 
-            letter-spacing: 6px; font-size: 2.5rem; 
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
+        .header { text-align: center; padding: 50px 20px 30px; }
+        .header h1 { margin: 0; color: var(--gold); letter-spacing: 6px; font-size: 2.5rem; text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #222; z-index: 1000; }
         .nav-item { color: #555; text-decoration: none; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; flex: 1; }
@@ -54,57 +46,28 @@
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .card { 
-            background: var(--card-bg); 
-            border-radius: 15px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            border: 1px solid #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
+        .card { background: var(--card-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h3 { color: var(--gold); margin-top: 0; letter-spacing: 1px; text-transform: uppercase; font-size: 0.9rem; border-left: 4px solid var(--gold); padding-left: 12px; margin-bottom: 15px; }
 
-        /* Gallery Features */
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
-        .gallery-grid img { 
-            width: 100%; height: 110px; object-fit: cover; 
-            border-radius: 8px; border: 1px solid #444; 
-            transition: 0.3s; cursor: zoom-in;
-        }
-        .gallery-grid img:hover { border-color: var(--gold); transform: scale(1.02); }
+        .gallery-grid img { width: 100%; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid #444; transition: 0.3s; cursor: zoom-in; }
 
-        /* Lightbox Zoom */
-        #lightbox {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        #lightbox img { max-width: 95%; max-height: 85%; border: 3px solid var(--gold); border-radius: 5px; box-shadow: 0 0 50px var(--gold); }
+        #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        #lightbox img { max-width: 95%; max-height: 85%; border: 3px solid var(--gold); border-radius: 5px; }
 
-        /* Inputs & Buttons */
-        input, select { width: 100%; padding: 15px; margin: 8px 0; background: #0a0a0a; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box; font-size: 1rem;}
-        input:focus { border-color: var(--gold); outline: none; }
+        input, select { width: 100%; padding: 15px; margin: 8px 0; background: #0a0a0a; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
         button { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; font-weight: 900; border-radius: 10px; text-transform: uppercase; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        button:active { transform: scale(0.98); background: #b8962d; }
-
-        .momo-box { background: #000; border: 2px dashed var(--gold); padding: 25px; text-align: center; border-radius: 15px; margin-top: 10px;}
-        .status-active { color: #2ecc71; font-weight: bold; background: rgba(46, 204, 113, 0.1); padding: 5px 10px; border-radius: 5px; }
-        .status-pending { color: #f1c40f; font-weight: bold; background: rgba(241, 196, 15, 0.1); padding: 5px 10px; border-radius: 5px; }
         
-        .member-list-item { 
-            background: #111; padding: 15px; border-radius: 10px; 
-            margin-bottom: 10px; border: 1px solid #222; 
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .momo-box { background: #000; border: 2px dashed var(--gold); padding: 25px; text-align: center; border-radius: 15px; margin-top: 10px;}
+        .status-active { color: #2ecc71; font-weight: bold; }
+        .status-pending { color: #f1c40f; font-weight: bold; }
+        
+        .member-list-item { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
 
-<div id="lightbox" onclick="this.style.display='none'">
-    <img id="lightboxImg" src="">
-</div>
-
+<div id="lightbox" onclick="this.style.display='none'"><img id="lightboxImg" src=""></div>
 <div class="app-bg"></div>
 
 <div class="header">
@@ -115,11 +78,8 @@
 <div id="home" class="screen active">
     <div class="card">
         <h3>Member Status</h3>
-        <div id="userStatusArea">
-            <p style="color: #666;">Syncing with cloud...</p>
-        </div>
+        <div id="userStatusArea"><p style="color: #666;">Syncing with cloud...</p></div>
     </div>
-
     <div class="card">
         <h3>Elite Gallery</h3>
         <div class="gallery-grid">
@@ -130,7 +90,6 @@
             <img src="https://images.unsplash.com/photo-1574673001865-4527bc33c9ab?q=80&w=400" onclick="viewImg(this.src)">
             <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=400" onclick="viewImg(this.src)">
         </div>
-        <small style="color:#555">Tap any image to zoom</small>
     </div>
 </div>
 
@@ -139,21 +98,17 @@
         <h3>New Enrollment</h3>
         <form id="regForm" onsubmit="saveMember(event)">
             <input type="text" id="mName" placeholder="Full Name" required>
-            <input type="text" id="mAlias" placeholder="Unique Alias (e.g. Shadow01)" required>
+            <input type="text" id="mAlias" placeholder="Unique Alias (e.g. DennisG)" required>
             <input type="tel" id="mPhone" placeholder="MoMo Phone Number" required>
-            
             <select id="mType" required>
                 <option value="" disabled selected>Membership Type</option>
                 <option value="Full Member">Full Member</option>
                 <option value="Student">Student</option>
-                <option value="Temporary">Temporary Member</option>
             </select>
-
             <select id="mSub" required>
                 <option value="" disabled selected>Subscription Plan</option>
                 <option value="30">Monthly (GH₵ 200)</option>
-                <option value="180">6 Months (GH₵ 1080)</option>
-                <option value="365">1 Year (GH₵ 1920)</option>
+                <option value="180">6 Months</option>
             </select>
             <button type="submit" id="btnJoin">Join & Subscribe</button>
         </form>
@@ -164,18 +119,11 @@
     <div class="card">
         <h3>Payment Gateway</h3>
         <div class="momo-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/MTN_Logo.svg/800px-MTN_Logo.svg.png" style="width:50px; margin-bottom:10px;">
-            <p style="margin:5px 0">MTN Mobile Money</p>
+            <p>MTN Mobile Money</p>
             <b style="font-size: 1.4rem; color: var(--gold);">0597219410</b><br>
-            <p style="color: #fff; margin:10px 0;">Name: <b>Ben Shadow</b></p>
-            <div style="background:#222; padding:10px; border-radius:8px;">
-                <small>Reference:</small><br>
-                <b id="refDisplay" style="color:var(--gold); font-size:1.1rem;">---</b>
-            </div>
+            <p>Name: <b>Ben Shadow</b></p>
+            <small>Reference: <b id="refDisplay" style="color:var(--gold)">---</b></small>
         </div>
-        <p style="font-size: 0.8rem; color: #888; margin-top: 20px; line-height: 1.4;">
-            <i class="fa fa-info-circle"></i> Once payment is received, your dashboard will update to <b>ACTIVE</b> automatically.
-        </p>
     </div>
 </div>
 
@@ -183,18 +131,14 @@
     <div id="adminLock">
         <div class="card">
             <h3>Admin Access</h3>
-            <input type="password" id="adminPass" placeholder="Enter Secret Code">
+            <input type="password" id="adminPass" placeholder="Secret Code">
             <button onclick="unlockAdmin()">Enter Registry</button>
         </div>
     </div>
-    
     <div id="adminPanel" style="display:none;">
         <div class="card">
-            <h3>Live Member Registry</h3>
-            <p style="font-size: 0.7rem; color: #888; margin-bottom:15px;">Automatically updated from cloud storage</p>
-            <div id="fullMemberRegistry">
-                <p>Loading registry...</p>
-            </div>
+            <h3>Live Registry</h3>
+            <div id="fullMemberRegistry"><p>Loading...</p></div>
         </div>
     </div>
 </div>
@@ -207,10 +151,9 @@
 </nav>
 
 <script>
-    // --- FIREBASE CONFIG ---
-    // Update these with your actual Firebase Project Details
+    // --- INTEGRATED FIREBASE CONFIG ---
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
+        apiKey: "AIzaSyAg6tFbQ5T0WxogZ8Pq8fXEVJjMA3fmF0w",
         databaseURL: "https://shadow-gym-default-rtdb.firebaseio.com/",
         projectId: "shadow-gym"
     };
@@ -220,20 +163,16 @@
 
     window.onload = checkSubStatus;
 
-    // Gallery Zoom Function
     function viewImg(src) {
         document.getElementById('lightboxImg').src = src;
         document.getElementById('lightbox').style.display = 'flex';
     }
 
-    // Navigation Function
     function nav(id, element) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         element.classList.add('active');
-        
         if(id === 'payment') {
             const alias = localStorage.getItem('shadowAlias');
             document.getElementById('refDisplay').innerText = alias ? alias.toUpperCase() : "REGISTER FIRST";
@@ -242,15 +181,9 @@
         if(id === 'admin') loadRegistry();
     }
 
-    // SAVE TO FIREBASE
     function saveMember(e) {
         e.preventDefault();
-        const btn = document.getElementById('btnJoin');
-        btn.innerText = "Processing...";
-        btn.disabled = true;
-
         const alias = document.getElementById('mAlias').value.trim().toLowerCase();
-        
         const member = {
             name: document.getElementById('mName').value,
             alias: alias,
@@ -258,104 +191,63 @@
             type: document.getElementById('mType').value,
             duration: parseInt(document.getElementById('mSub').value),
             status: "Pending",
-            expiry: null,
             joined: new Date().toISOString()
         };
 
-        database.ref('members/' + alias).set(member)
-            .then(() => {
-                localStorage.setItem('shadowAlias', alias);
-                alert("Registration Sent to Cloud!");
-                btn.innerText = "Join & Subscribe";
-                btn.disabled = false;
-                nav('payment', document.querySelectorAll('.nav-item')[2]);
-            })
-            .catch(err => {
-                alert("Error: " + err.message);
-                btn.disabled = false;
-            });
+        database.ref('members/' + alias).set(member).then(() => {
+            localStorage.setItem('shadowAlias', alias);
+            alert("Registration Sent!");
+            nav('payment', document.querySelectorAll('.nav-item')[2]);
+        });
     }
 
-    // CHECK PERSONAL STATUS
     function checkSubStatus() {
         const alias = localStorage.getItem('shadowAlias');
         const area = document.getElementById('userStatusArea');
         if(!alias) {
-            area.innerHTML = "<p>No active membership found.</p><button onclick=\"nav('register', document.querySelectorAll('.nav-item')[1])\">Register Now</button>";
+            area.innerHTML = "<button onclick=\"nav('register', document.querySelectorAll('.nav-item')[1])\">Register Now</button>";
             return;
         }
-
         database.ref('members/' + alias).on('value', (snapshot) => {
             const m = snapshot.val();
             if(m) {
-                let statusText = `<span class="status-pending">PENDING ACTIVATION</span>`;
-                if(m.status === "Active") {
-                    const exp = new Date(m.expiry);
-                    statusText = `<span class="status-active">ACTIVE</span><br><br><small>Valid until: ${exp.toLocaleDateString()}</small>`;
-                }
-                area.innerHTML = `
-                    <div style="font-size: 1.1rem; margin-bottom: 10px;">Welcome back, <b>${m.name}</b></div>
-                    <div style="margin-top:15px;">Status: ${statusText}</div>
-                `;
+                let st = m.status === "Active" ? `<span class="status-active">ACTIVE</span>` : `<span class="status-pending">PENDING</span>`;
+                area.innerHTML = `<b>${m.name}</b><br>Status: ${st}`;
             }
         });
     }
 
-    // ADMIN UNLOCK
     function unlockAdmin() {
         if(document.getElementById('adminPass').value === "SHADOWADMIN") {
             document.getElementById('adminLock').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             loadRegistry();
-        } else { alert("Incorrect Admin Code"); }
+        } else { alert("Wrong Code"); }
     }
 
-    // AUTO-LISTING REGISTRY (No search needed)
     function loadRegistry() {
-        const registryList = document.getElementById('fullMemberRegistry');
-
+        const list = document.getElementById('fullMemberRegistry');
         database.ref('members').on('value', (snapshot) => {
-            registryList.innerHTML = "";
+            list.innerHTML = "";
             const members = snapshot.val();
-            
-            if(!members) {
-                registryList.innerHTML = "<p>No members registered yet.</p>";
-                return;
-            }
-
             for (let id in members) {
                 const m = members[id];
-                const isPending = m.status === "Pending";
-                
-                registryList.innerHTML += `
+                list.innerHTML += `
                     <div class="member-list-item">
-                        <div>
-                            <b style="color:var(--gold)">${m.name}</b><br>
-                            <small>${m.type} | ${m.phone}</small>
-                        </div>
-                        <div>
-                            ${isPending ? 
-                                `<button onclick="activateUser('${id}', ${m.duration})" style="padding:8px 12px; font-size:0.7rem; margin:0;">ACTIVATE</button>` : 
-                                `<span class="status-active">ACTIVE</span>`
-                            }
-                        </div>
-                    </div>
-                `;
+                        <div><b>${m.name}</b><br><small>${m.phone}</small></div>
+                        <button onclick="activateUser('${id}', ${m.duration})" style="width:auto; padding:5px 10px;">${m.status === 'Active' ? 'RE-ACTIVATE' : 'ACTIVATE'}</button>
+                    </div>`;
             }
         });
     }
 
-    // ADMIN ACTIVATE BUTTON
     function activateUser(alias, days) {
-        const expDate = new Date();
-        expDate.setDate(expDate.getDate() + days);
-        
-        database.ref('members/' + alias).update({ 
-            status: "Active",
-            expiry: expDate.toISOString() 
-        }).then(() => alert("Member " + alias + " is now ACTIVE!"));
+        const exp = new Date();
+        exp.setDate(exp.getDate() + days);
+        database.ref('members/' + alias).update({ status: "Active", expiry: exp.toISOString() })
+            .then(() => alert("Activated!"));
     }
 </script>
-
 </body>
-</html>
+    </html>
+                                                             
